@@ -25,31 +25,53 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+	dev
+}
+
+bootRun {
+	classpath = sourceSets.main.runtimeClasspath + configurations.dev
+}
+
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-	compile('org.springframework.boot:spring-boot-devtools')
 	
+	dev('org.springframework.boot:spring-boot-devtools')
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task npmInstall(type: Exec) {
+	description 'Download node dependencies'
+	group 'Build'
+
+	inputs.file(new File(rootDir, ngSrcDir + '/package.json'))
+	outputs.dir(new File(rootDir, ngSrcDir + '/node_modules'))
+	workingDir file(new File(rootDir, ngSrcDir))
+	commandLine npm, 'install'
 }
 
 task ngBuild(type: Exec) {
 	description 'Build the Angular 2 App'
 	group 'Build'
+
+	dependsOn npmInstall
 	
-	inputs.files(fileTree(ngSrcDir))
-	outputs.dir(file(ngBuildDir))
-	workingDir ngSrcDir
-	commandLine 'ng', 'build'
+	inputs.files(fileTree(new File(rootDir, ngSrcDir)))
+	outputs.dir(file(new File(rootDir, ngBuildDir)))
+	workingDir file(new File(rootDir, ngSrcDir))
+	commandLine ng, 'build', '-op', file(new File(rootDir, ngBuildDir))
 }
 
 task ngWatch(type: Exec) {
 	description 'Continuously build the Angular 2 App'
 	group 'Build'
+
+	dependsOn npmInstall
 	
-	workingDir ngSrcDir
-	commandLine 'ng', 'build', '-w'
+	workingDir file(new File(rootDir, ngSrcDir))
+	commandLine ng, 'build', '-w', '-op', file(new File(rootDir, ngBuildDir))
 }
 
 classes.dependsOn ngBuild
