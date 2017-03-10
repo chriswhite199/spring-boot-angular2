@@ -1,0 +1,15 @@
+<h1>{{title}}</h1>
+
+<form>
+	<fieldset>
+		<legend>Please Login</legend>
+
+		<label for="username">Username</label> <input type="text"
+			id="username" name="username" /> <label for="password">Password</label>
+		<input type="password" id="password" name="password" />
+
+		<div class="form-actions">
+			<button type="button" class="btn btn-success" (click)="doLogin()">Submit</button>
+		</div>
+	</fieldset>
+</form>

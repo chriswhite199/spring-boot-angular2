@@ -1,0 +1,55 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'spring-boot-angular2'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-devtools')
+	
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task ngBuild(type: Exec) {
+	description 'Build the Angular 2 App'
+	group 'Build'
+	
+	inputs.files(fileTree(ngSrcDir))
+	outputs.dir(file(ngBuildDir))
+	workingDir ngSrcDir
+	commandLine 'ng', 'build'
+}
+
+task ngWatch(type: Exec) {
+	description 'Continuously build the Angular 2 App'
+	group 'Build'
+	
+	workingDir ngSrcDir
+	commandLine 'ng', 'build', '-w'
+}
+
+classes.dependsOn ngBuild
