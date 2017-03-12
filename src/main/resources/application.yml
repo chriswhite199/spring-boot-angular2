@@ -1,0 +1,5 @@
+jwt:
+  auth.service:
+    expiration: PT15M
+  login.filter:
+    path: /login

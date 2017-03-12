@@ -25,22 +25,18 @@ repositories {
 	mavenCentral()
 }
 
-configurations {
-	dev
-}
-
-bootRun {
-	classpath = sourceSets.main.runtimeClasspath + configurations.dev
-}
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.projectlombok:lombok')
+	compile('io.jsonwebtoken:jjwt:0.7.0')
 	
-	dev('org.springframework.boot:spring-boot-devtools')
+	runtime('org.springframework.boot:spring-boot-devtools')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+// NPM and ng tasks - Note that running these tasks in Eclipse has varying results (due to PATH issues)
 
 task npmInstall(type: Exec) {
 	description 'Download node dependencies'

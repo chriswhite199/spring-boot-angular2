@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "jwt.auth.service.expiration",
+    "type": "java.lang.String",
+    "description": "JWT TTL duration, using java Duration noration, e.g: PT15M for 15 minutes"
+  },
+  {
+    "name": "jwt.login.filter.path",
+    "type": "java.lang.String",
+    "description": "Servlet path for login filter"
+  }
+]}
