@@ -1,6 +1,6 @@
 {"properties": [
   {
-    "name": "jwt.auth.service.expiration",
+    "name": "jwt.auth.service.tokenTimeToLive",
     "type": "java.lang.String",
     "description": "JWT TTL duration, using java Duration noration, e.g: PT15M for 15 minutes"
   },

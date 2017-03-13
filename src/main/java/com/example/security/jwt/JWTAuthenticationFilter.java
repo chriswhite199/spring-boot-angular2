@@ -12,13 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
+import com.example.security.AuthenticatedUser;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,13 +30,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JWTAuthenticationFilter extends GenericFilterBean {
 	@Autowired
+	@Setter
 	private TokenAuthenticationService tokenAuthService;
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		try {
-			Authentication authentication = tokenAuthService.getAuthentication((HttpServletRequest) request);
+			AuthenticatedUser authentication = tokenAuthService.getAuthentication((HttpServletRequest) request,
+					(HttpServletResponse) response);
 
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			chain.doFilter(request, response);

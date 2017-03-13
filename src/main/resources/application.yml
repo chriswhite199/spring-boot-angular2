@@ -1,5 +1,10 @@
 jwt:
   auth.service:
-    expiration: PT15M
+    tokenTimeToLive: PT15M
   login.filter:
     path: /login
+    
+server:
+  session:
+    cookie:
+      secure: true

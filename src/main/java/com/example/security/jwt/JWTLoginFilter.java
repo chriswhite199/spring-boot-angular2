@@ -16,20 +16,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
 import com.example.security.AccountCredentials;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Filter to handle login authentication
  */
-@Slf4j
 @Component
-public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
+public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter implements AuthenticationSuccessHandler {
 	@Autowired
 	private TokenAuthenticationService tokenAuthenticationService;
 
@@ -39,6 +37,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 	@Autowired
 	public JWTLoginFilter(JWTLoginFilterConfig config) {
 		super(new AntPathRequestMatcher(config.getPath(), HttpMethod.POST.name()));
+		setAuthenticationSuccessHandler(this);
 	}
 
 	@Autowired
@@ -65,7 +64,14 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
-		tokenAuthenticationService.addAuthentication(response, authResult);
+		// tokenAuthenticationService.addAuthentication(response, authResult);
 		super.successfulAuthentication(request, response, chain, authResult);
+	}
+
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) throws IOException, ServletException {
+		tokenAuthenticationService.addAuthentication(response, authentication);
+		response.setStatus(HttpStatus.OK.value());
 	}
 }

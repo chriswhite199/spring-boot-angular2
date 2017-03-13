@@ -2,12 +2,16 @@
 
 <form>
 	<fieldset>
-		<legend>Please Login</legend>
+		<legend>App Login</legend>
 
-		<label for="username">Username</label> <input type="text"
-			id="username" name="username" /> <label for="password">Password</label>
-		<input type="password" id="password" name="password" />
-
+		<div>
+			<label for="username">Username</label> <input type="text"
+				id="username" name="username"  [(ngModel)]="username" />
+		</div>
+		<div>
+			<label for="password">Password</label> <input type="password"
+				id="password" name="password" [(ngModel)]="password" />
+		</div>
 		<div class="form-actions">
 			<button type="button" class="btn btn-success" (click)="doLogin()">Submit</button>
 		</div>

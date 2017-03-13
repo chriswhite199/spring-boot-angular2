@@ -9,18 +9,22 @@ import 'rxjs/add/operator/toPromise';
 })
 export class AppComponent {
   title = 'Login page!';
+  username: string;
+  password: string;
 
   constructor(private http: Http) { }
 
   doLogin() {
-    console.log('posting')
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    let params: URLSearchParams = new URLSearchParams();
-    params.set('username', 'user')
-    params.set('password', 'password')
+    
+    var body = { 'username' : this.username, 'password' : this.password };
+    console.log('Posting' + JSON.stringify(body));
+    //var headers = new Headers();
+    //headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    //let params: URLSearchParams = new URLSearchParams();
+    //params.set('username', 'user')
+    //params.set('password', 'password')
 
-    let options = new RequestOptions({ headers: headers });
-    this.http.post('/login', params.toString(), options).toPromise().then(console.log)
+    //let options = new RequestOptions({ headers: headers });
+    this.http.post('/login', body /*params.toString(), options*/).toPromise().then(console.log)
   }
 }
