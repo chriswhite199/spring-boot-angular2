@@ -71,7 +71,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter imple
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-		tokenAuthenticationService.addAuthentication(response, authentication);
+		tokenAuthenticationService
+		.addAuthentication(response, authentication);
 		response.setStatus(HttpStatus.OK.value());
 	}
 }
