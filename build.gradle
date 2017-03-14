@@ -48,12 +48,16 @@ task npmInstall(type: Exec) {
 	commandLine npm, 'install'
 }
 
+// When launching / building Spring Boot app in Eclipse, the default output path is the bin folder (vs build for a gradle build)
+// with that in mind you probably want to invoke these tasks with an amended '-PngBuildDir=bin/static' to ensure the app has the
+// built static web artifacts on the classpath 
+
 task ngBuild(type: Exec) {
 	description 'Build the Angular 2 App'
 	group 'Build'
 
 	dependsOn npmInstall
-	
+
 	inputs.files(fileTree(new File(rootDir, ngSrcDir)))
 	outputs.dir(file(new File(rootDir, ngBuildDir)))
 	workingDir file(new File(rootDir, ngSrcDir))

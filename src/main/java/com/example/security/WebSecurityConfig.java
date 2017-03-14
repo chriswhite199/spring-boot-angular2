@@ -37,6 +37,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
+	/**
+	 * Wrap {@link JWTAuthenticationFilter} filter to prevent spring auto adding
+	 * it (added in the {@link #configure(HttpSecurity)})
+	 *
+	 * @param filter
+	 * @return
+	 */
 	@Bean
 	public FilterRegistrationBean registration(JWTAuthenticationFilter filter) {
 		FilterRegistrationBean registration = new FilterRegistrationBean(filter);
